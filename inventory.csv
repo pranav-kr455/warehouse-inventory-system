@@ -1,0 +1,7 @@
+sku,item_name,quantity,threshold,target_stock
+SKU-3311,Steel Bolts (M6),42,50,200
+SKU-4456,Cardboard Boxes (L),9,30,150
+SKU-5502,Bubble Wrap Roll,130,40,100
+SKU-6120,Adhesive Labels,15,20,100
+SKU-1042,Cotton Fabric Roll,18,20,100
+SKU-2087,Packing Tape,240,50,200
