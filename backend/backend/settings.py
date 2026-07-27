@@ -19,10 +19,10 @@ SECRET_KEY = os.environ.get(
 )
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# Automatically set DEBUG to False if running on Render / hosting environments
-DEBUG = os.environ.get('RENDER', False) == False
+# Automatically set DEBUG to False if running on Vercel or other hosting environments
+DEBUG = os.environ.get('VERCEL', False) == False
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['.vercel.app', '127.0.0.1', 'localhost', '*']
 
 
 # Application definition
@@ -55,7 +55,7 @@ ROOT_URLCONF = 'backend.urls'
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',  # Fixed module path
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -72,7 +72,6 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 
 # Database configuration
-# Uses PostgreSQL when DATABASE_URL is set (Production), fallback to SQLite3 locally
 DATABASES = {
     'default': dj_database_url.config(
         default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
@@ -122,5 +121,6 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-# CORS Configuration: Allow local React app + any deployed Vercel/Netlify origins
+# CORS Configuration
+
 CORS_ALLOW_ALL_ORIGINS = True
