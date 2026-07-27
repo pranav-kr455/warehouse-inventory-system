@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 
 const API_URL = "/api/inventory/";
+
 function App() {
   const [items, setItems] = useState([]);
   const [displayItems, setDisplayItems] = useState([]);
@@ -18,7 +19,8 @@ function App() {
     { id: 6, sku: "SKU-2087", item_name: "Packing Tape", quantity: 240, threshold: 50, target_stock: 200 },
   ];
 
-  const fetchInventory = async () => {
+  // Wrapped in useCallback to safely include in useEffect dependency array
+  const fetchInventory = useCallback(async () => {
     try {
       const response = await axios.get(API_URL);
       const data = Array.isArray(response.data) && response.data.length > 0 ? response.data : defaultItems;
@@ -26,11 +28,11 @@ function App() {
     } catch (error) {
       setItems(defaultItems);
     }
-  };
+  }, []);
 
   useEffect(() => {
     fetchInventory();
-  }, []);
+  }, [fetchInventory]);
 
   useEffect(() => {
     const timerInterval = setInterval(() => {
@@ -59,6 +61,7 @@ function App() {
     }, 3000);
 
     return () => clearInterval(shuffleInterval);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [items.length]);
 
   const handleFileChange = (e) => {
@@ -235,13 +238,13 @@ const styles = {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    padding: "24px 50px", // Increased padding for a larger banner feel
+    padding: "24px 50px",
     backgroundColor: "#ffffff",
     borderBottom: "1px solid #e2e8f0",
     boxShadow: "0 3px 12px rgba(0, 0, 0, 0.03)",
   },
   headerSpacer: {
-    width: "120px", // Balances the right timer badge for perfect central alignment
+    width: "120px",
   },
   centeredTitleGroup: {
     display: "flex",
@@ -270,7 +273,7 @@ const styles = {
     margin: 0,
     fontWeight: "900",
     color: "#0f172a",
-    fontSize: "28px", // Enlarged heading font size
+    fontSize: "28px",
     letterSpacing: "-0.8px",
     lineHeight: "1.1",
   },
