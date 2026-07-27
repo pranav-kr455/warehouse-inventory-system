@@ -62,7 +62,7 @@ function App() {
     }, 3000);
 
     return () => clearInterval(shuffleInterval);
-  }, [items.length]);
+  }, [items]);
 
   const handleFileChange = (e) => {
     if (e.target.files[0]) {
