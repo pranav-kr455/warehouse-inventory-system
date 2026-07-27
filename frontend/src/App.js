@@ -3,6 +3,16 @@ import axios from 'axios';
 
 const API_URL = "/api/inventory/";
 
+// Static default items array moved outside the component so it never changes
+const defaultItems = [
+  { id: 1, sku: "SKU-3311", item_name: "Steel Bolts (M6)", quantity: 42, threshold: 50, target_stock: 200 },
+  { id: 2, sku: "SKU-4456", item_name: "Cardboard Boxes (L)", quantity: 9, threshold: 30, target_stock: 150 },
+  { id: 3, sku: "SKU-5502", item_name: "Bubble Wrap Roll", quantity: 130, threshold: 40, target_stock: 100 },
+  { id: 4, sku: "SKU-6120", item_name: "Adhesive Labels", quantity: 15, threshold: 20, target_stock: 100 },
+  { id: 5, sku: "SKU-1042", item_name: "Cotton Fabric Roll", quantity: 18, threshold: 20, target_stock: 100 },
+  { id: 6, sku: "SKU-2087", item_name: "Packing Tape", quantity: 240, threshold: 50, target_stock: 200 },
+];
+
 function App() {
   const [items, setItems] = useState([]);
   const [displayItems, setDisplayItems] = useState([]);
@@ -10,16 +20,7 @@ function App() {
   const [fileName, setFileName] = useState("No file chosen");
   const [timeLeft, setTimeLeft] = useState(3600);
 
-  const defaultItems = [
-    { id: 1, sku: "SKU-3311", item_name: "Steel Bolts (M6)", quantity: 42, threshold: 50, target_stock: 200 },
-    { id: 2, sku: "SKU-4456", item_name: "Cardboard Boxes (L)", quantity: 9, threshold: 30, target_stock: 150 },
-    { id: 3, sku: "SKU-5502", item_name: "Bubble Wrap Roll", quantity: 130, threshold: 40, target_stock: 100 },
-    { id: 4, sku: "SKU-6120", item_name: "Adhesive Labels", quantity: 15, threshold: 20, target_stock: 100 },
-    { id: 5, sku: "SKU-1042", item_name: "Cotton Fabric Roll", quantity: 18, threshold: 20, target_stock: 100 },
-    { id: 6, sku: "SKU-2087", item_name: "Packing Tape", quantity: 240, threshold: 50, target_stock: 200 },
-  ];
-
-  // Wrapped in useCallback to safely include in useEffect dependency array
+  // Wrapped in useCallback; defaultItems is static outside, so no dependency warnings
   const fetchInventory = useCallback(async () => {
     try {
       const response = await axios.get(API_URL);
@@ -61,7 +62,6 @@ function App() {
     }, 3000);
 
     return () => clearInterval(shuffleInterval);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [items.length]);
 
   const handleFileChange = (e) => {
